@@ -8,11 +8,15 @@ import { InsertImageModal } from '../InsertImageModal';
 import { InsertTextModal } from '../InsertTextModal';
 import { UploadImageModal } from '../UploadImageModal';
 import { SaveArtModal } from '../SaveArtModal';
+import { useTextContext } from '../../contexts/TextContext';
+import { useImageContext } from '../../contexts/ImageContext';
 
 function Sidebar() {
   const [openModal, setOpenModal] = useState<ModalType>(null);
   const [selectedProduct, setSelectedProduct] = useState<{ productId: string; color: string } | null>(null);
   const [isSidebarOpen, setSidebarOpen] = useState(false);
+  const { addText } = useTextContext();
+  const { addImage } = useImageContext();
 
   return (
     <div>
@@ -61,13 +65,13 @@ function Sidebar() {
       <InsertImageModal
         isOpen={openModal === 'image'}
         onClose={() => setOpenModal(null)}
-        onSelect={() => {}}
+        onSelect={(data) => { addImage(data.url) }}
       />
 
       <InsertTextModal
         isOpen={openModal === 'text'}
         onClose={() => setOpenModal(null)}
-        onInsert={() => {}}
+        onInsert={(data) => { addText(data) }}
       />
 
       <UploadImageModal

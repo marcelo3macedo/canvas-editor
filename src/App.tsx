@@ -1,11 +1,17 @@
 import { Home } from './pages/Home';
 import { ProductProvider } from './contexts/ProductContext';
+import { TextProvider } from './contexts/TextContext';
+import { ImageProvider } from './contexts/ImageContext';
 
 function App() {
   return (
-    <ProductProvider>
-      <Home />
-    </ProductProvider>
+    <ImageProvider>
+      <TextProvider>
+        <ProductProvider>
+          <Home />
+        </ProductProvider>
+      </TextProvider>
+    </ImageProvider>
   );
 }
 

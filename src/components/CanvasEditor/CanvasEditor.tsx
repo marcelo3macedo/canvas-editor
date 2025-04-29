@@ -1,11 +1,15 @@
 import { useEffect, useState } from 'react';
-import { Stage, Layer, Image as KonvaImage } from 'react-konva';
+import { Stage, Layer, Image as KonvaImage, Text } from 'react-konva';
 import useImage from 'use-image';
 import { useProduct } from '../../contexts/ProductContext';
+import { useTextContext } from '../../contexts/TextContext';
+import { useImageContext } from '../../contexts/ImageContext';
 
 export function CanvasEditor() {
   const { productImage } = useProduct();
-  
+  const { texts, updateText } = useTextContext();
+  const { images } = useImageContext();
+
   const [image] = useImage(productImage, 'anonymous');
   const [canvasWidth, setCanvasWidth] = useState(500);
   const canvasHeight = 600;
@@ -29,6 +33,17 @@ export function CanvasEditor() {
       x: 0,
       y: (canvasHeight - image.height * scale) / 2,
     };
+  }  
+
+  type ImageItemProps = {
+    src: string;
+    x: number;
+    y: number;
+  };
+
+  function ImageItem({ src, x, y }: ImageItemProps) {
+    const [image] = useImage(src);
+    return <KonvaImage image={image} x={x} y={y} draggable />;
   }
 
   return (
@@ -36,12 +51,31 @@ export function CanvasEditor() {
       <Stage width={canvasWidth} height={canvasHeight}>
         <Layer>
           {image && <KonvaImage image={image} {...imageProps} />}
+          {texts.map((t) => (
+            <Text
+              key={t.id}
+              text={t.text}
+              x={t.x}
+              y={t.y}
+              fontSize={t.fontSize}
+              fontFamily={t.fontFamily}
+              fill={t.textColor}
+              fontStyle={t.italic ? 'italic' : 'normal'}
+              fontWeight={t.bold ? 'bold' : 'normal'}
+              textDecoration={t.underline ? 'underline' : ''}
+              align={t.textAlign}
+              draggable
+              onDragEnd={(e) => {
+                const { x, y } = e.target.position();
+                updateText(t.id, { x, y });
+              }}
+            />
+          ))}          
+          {images.map((img) => (
+            <ImageItem key={img.id} {...img} />
+          ))}
         </Layer>
       </Stage>
     </div>
   );
 }
-function setSelectedProduct(defaultProduct: any) {
-  throw new Error('Function not implemented.');
-}
-

@@ -39,7 +39,7 @@ export function InsertTextModal({ isOpen, onClose, onInsert }: InsertTextModalPr
   const [italic, setItalic] = useState(false);
   const [underline, setUnderline] = useState(false);
   const [textAlign, setTextAlign] = useState<'left' | 'center' | 'right'>('center');
-
+  
   useEffect(() => {
     WebFont.load({
       google: {
