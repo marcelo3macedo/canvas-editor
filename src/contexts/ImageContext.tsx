@@ -1,5 +1,6 @@
 // ImageContext.tsx
 import React, { createContext, useContext, useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 
 type ImageData = {
   id: string;
@@ -23,7 +24,8 @@ export const ImageProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const [images, setImages] = useState<ImageData[]>([]);
 
   const addImage = (src: string) => {
-    const id = crypto.randomUUID();
+    const id = uuidv4();
+
     setImages((prev) => [
       ...prev,
       {
