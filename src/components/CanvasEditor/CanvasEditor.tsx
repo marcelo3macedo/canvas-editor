@@ -14,7 +14,6 @@ export function CanvasEditor() {
   const { stageRef, transformerRef } = useCanvasContext();
   const { texts, updateText, removeText } = useTextContext();
   const { images, deleteImage, updateImage } = useImageContext();
-  const [showImageEditModal, setShowImageEditModal] = useState(false);
 
   const [image] = useImage(productImage, 'anonymous');
   const [canvasWidth, setCanvasWidth] = useState(500);
@@ -23,6 +22,7 @@ export function CanvasEditor() {
   const layerRef = useRef<any>(null);
 
   const selectedText = texts.find((t) => t.id === selectedId);
+  const selectedImage = images.find((t) => t.id === selectedId);
 
   useEffect(() => {
     const updateSize = () => {
@@ -98,11 +98,9 @@ export function CanvasEditor() {
         draggable
         onMouseDown={() => {
           setSelectedId(id);
-          setShowImageEditModal(true);
         }}
         onClick={() => {
           setSelectedId(id);
-          setShowImageEditModal(true);
         }}
         onDragEnd={(e) => {
           const { x, y } = e.target.position();
@@ -182,15 +180,14 @@ export function CanvasEditor() {
         />
       )}
 
-      {showImageEditModal && (
+      {selectedImage && (
         <ImageEditPanel
-          onClose={() => setShowImageEditModal(false)}
+          onClose={() => setSelectedId(null)}
           onDelete={() => {
             if (selectedId) {
               deleteImage(selectedId);
             }
             setSelectedId(null);
-            setShowImageEditModal(false);
           }}
         />
       )}
