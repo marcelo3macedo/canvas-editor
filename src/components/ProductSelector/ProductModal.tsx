@@ -54,7 +54,7 @@ export function ProductModal({ isOpen, onClose, onSelect }: ProductModalProps) {
                   }`}
                   onClick={() => handleProductSelect(product)}
                 >
-                  <img src={product.image} alt={product.name} className="w-16 h-16 object-contain" />
+                  <img src={`${import.meta.env.BASE_URL}${product.image}`} alt={product.name} className="w-16 h-16 object-contain" />
                   <span className="text-lg">{product.name}</span>
                 </div>
               ))}
@@ -66,7 +66,7 @@ export function ProductModal({ isOpen, onClose, onSelect }: ProductModalProps) {
           <>
             <h2 className="text-xl font-semibold mb-4 text-center">Escolha uma Cor</h2>
             <img
-              src={selectedColorData?.image || selectedProduct.image}
+              src={`${import.meta.env.BASE_URL}${selectedColorData?.image || selectedProduct.image}`}
               alt={selectedProduct.name}
               className="w-48 h-48 object-contain mb-4"
             />
