@@ -48,6 +48,18 @@ export function InsertTextModal({ isOpen, onClose, onInsert }: InsertTextModalPr
     });
   }, []);
 
+  const resetForm = () => {
+    setText('');
+    setTextColor('#000000');
+    setBackgroundColor('#ffffff');
+    setFontFamily('Arial');
+    setFontSize(24);
+    setBold(false);
+    setItalic(false);
+    setUnderline(false);
+    setTextAlign('center');
+  };
+
   if (!isOpen) return null;
 
   return (
@@ -197,6 +209,7 @@ export function InsertTextModal({ isOpen, onClose, onInsert }: InsertTextModalPr
               underline,
               textAlign,
             });
+            resetForm();
             onClose();
           }}
           disabled={!text}

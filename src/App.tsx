@@ -1,17 +1,11 @@
 import { Home } from './pages/Home';
-import { ProductProvider } from './contexts/ProductContext';
-import { TextProvider } from './contexts/TextContext';
-import { ImageProvider } from './contexts/ImageContext';
+import { AppProviders } from './AppProviders';
 
 function App() {
   return (
-    <ImageProvider>
-      <TextProvider>
-        <ProductProvider>
-          <Home />
-        </ProductProvider>
-      </TextProvider>
-    </ImageProvider>
+    <AppProviders>
+      <Home />
+    </AppProviders>
   );
 }
 

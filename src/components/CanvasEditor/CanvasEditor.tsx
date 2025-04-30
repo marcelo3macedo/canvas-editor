@@ -6,12 +6,14 @@ import { useTextContext } from '../../contexts/TextContext';
 import { useImageContext } from '../../contexts/ImageContext';
 import { TextEditPanel } from '../TextEditPanel';
 import { ImageEditPanel } from '../ImageEditPanel';
+import { useCanvasContext } from '../../contexts/CanvasContext';
 
 export function CanvasEditor() {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const { productImage } = useProduct();
+  const { stageRef, transformerRef } = useCanvasContext();
   const { texts, updateText, removeText } = useTextContext();
-  const { images, deleteImage } = useImageContext();
+  const { images, deleteImage, updateImage } = useImageContext();
   const [showImageEditModal, setShowImageEditModal] = useState(false);
   const [selectedImage, setSelectedImage] = useState<ImageItemProps | null>(null);
 
@@ -19,7 +21,6 @@ export function CanvasEditor() {
   const [canvasWidth, setCanvasWidth] = useState(500);
   const canvasHeight = 600;
 
-  const transformerRef = useRef<any>(null);
   const layerRef = useRef<any>(null);
 
   const selectedText = texts.find((t) => t.id === selectedId);
@@ -68,28 +69,75 @@ export function CanvasEditor() {
     src: string;
     x: number;
     y: number;
+    width?: number;
+    height?: number;
   };
 
-  function ImageItem({ src, id, x, y }: ImageItemProps) {
-    const [image] = useImage(src);
-    return <KonvaImage id={id} image={image} x={x} y={y} draggable onClick={() => {
-      setSelectedId(id)      
-      setSelectedImage({ id, src, x, y });
-      setShowImageEditModal(true);
-    }}
-    onDelete={() => {
-      setSelectedId(null);
-    }} />;
-  }
+  function ImageItem({ src, id, x, y, width, height }: ImageItemProps) {
+    const [image] = useImage(src, 'anonymous');
+    const shapeRef = useRef<any>(null);
+    const isSelected = selectedId === id;
+  
+    useEffect(() => {
+      if (isSelected && image && shapeRef.current && transformerRef.current) {
+        transformerRef.current.nodes([shapeRef.current]);
+        transformerRef.current.getLayer()?.batchDraw();
+      }
+    }, [isSelected, image]);
+  
+    if (!image) return null;
+  
+    return (
+      <KonvaImage
+        id={id}
+        ref={shapeRef}
+        image={image}
+        x={x}
+        y={y}
+        width={width ?? image.width}
+        height={height ?? image.height}
+        draggable
+        onMouseDown={() => {
+          setSelectedId(id);
+          setShowImageEditModal(true);
+        }}
+        onClick={() => {
+          setSelectedId(id);
+          setShowImageEditModal(true);
+        }}
+        onDragEnd={(e) => {
+          const { x, y } = e.target.position();
+          updateImage(id, { x, y });
+        }}
+        onTransformEnd={(e) => {
+          const node = shapeRef.current;
+          const scaleX = node.scaleX();
+          const scaleY = node.scaleY();
+  
+          node.scaleX(1);
+          node.scaleY(1);
+  
+          updateImage(id, {
+            x: node.x(),
+            y: node.y(),
+            width: node.width() * scaleX,
+            height: node.height() * scaleY,
+          });
+        }}
+      />
+    );
+  } 
 
   return (
     <div className="flex-1 flex justify-center items-baseline">
       <Stage width={canvasWidth} height={canvasHeight} 
+        ref={stageRef}
           onMouseDown={(e) => {
             const clickedOnEmpty = e.target === e.target.getStage();
             const clickedOnBackground = e.target?.id() === 'background';
             if (clickedOnEmpty || clickedOnBackground) {
               setSelectedId(null);
+              transformerRef.current?.nodes([]);
             }
           }}>
         <Layer ref={layerRef}>
@@ -135,11 +183,11 @@ export function CanvasEditor() {
         />
       )}
 
-      {showImageEditModal && selectedImage && (
+      {showImageEditModal && (
         <ImageEditPanel
           onClose={() => setShowImageEditModal(false)}
           onDelete={() => {
-            deleteImage(selectedImage.id);
+            deleteImage(selectedId);
             setSelectedId(null);
             setSelectedImage(null);
             setShowImageEditModal(false);

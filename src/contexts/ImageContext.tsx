@@ -12,6 +12,7 @@ type ImageContextType = {
   images: ImageData[];
   addImage: (src: string) => void;
   deleteImage: (id: string) => void;
+  updateImage: (id: string, updates: Partial<Omit<ImageData, 'id' | 'src'>>) => void;
 };
 
 const ImageContext = createContext<ImageContextType | undefined>(undefined);
@@ -26,10 +27,16 @@ export const ImageProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       {
         id,
         src,
-        x: window.innerWidth / 2 - 100, // centered roughly
-        y: window.innerHeight / 2 - 100,
+        x: 0,
+        y: 0,
       },
     ]);
+  };
+
+  const updateImage = (id: string, updates: Partial<Omit<ImageData, 'id' | 'src'>>) => {
+    setImages((prev) =>
+      prev.map((img) => (img.id === id ? { ...img, ...updates } : img))
+    );
   };
 
   const deleteImage = (id: string) => {
@@ -37,7 +44,7 @@ export const ImageProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   };
 
   return (
-    <ImageContext.Provider value={{ images, addImage, deleteImage }}>
+    <ImageContext.Provider value={{ images, addImage, updateImage, deleteImage }}>
       {children}
     </ImageContext.Provider>
   );

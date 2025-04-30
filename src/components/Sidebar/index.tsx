@@ -10,6 +10,7 @@ import { UploadImageModal } from '../UploadImageModal';
 import { SaveArtModal } from '../SaveArtModal';
 import { useTextContext } from '../../contexts/TextContext';
 import { useImageContext } from '../../contexts/ImageContext';
+import { useCanvasContext } from '../../contexts/CanvasContext';
 
 function Sidebar() {
   const [openModal, setOpenModal] = useState<ModalType>(null);
@@ -17,6 +18,29 @@ function Sidebar() {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const { addText } = useTextContext();
   const { addImage } = useImageContext();
+  const { stageRef, transformerRef } = useCanvasContext();
+  const [exportedImage, setExportedImage] = useState('');
+
+  const handleSave = () => {
+    if (stageRef.current) {
+      transformerRef.current?.nodes([]);
+      const uri = stageRef.current.toDataURL({ pixelRatio: 2 });
+      const link = document.createElement('a');
+      link.download = 'artwork.png';
+      link.href = uri;
+      link.click();
+    }
+  };
+
+  const validate = (modal: ModalType) => {
+    setSidebarOpen(false);
+    
+    if (modal === 'save') {
+      transformerRef.current?.nodes([]);
+      const uri = stageRef.current.toDataURL({ pixelRatio: 2 });
+      setExportedImage(uri);
+    }
+  }
 
   return (
     <div>
@@ -48,7 +72,10 @@ function Sidebar() {
               icon={button.icon}
               label={button.label}
               onClick={
-                  () => setOpenModal(button.modal)
+                  () => {
+                    setOpenModal(button.modal)
+                    validate(button.modal)
+                  }
               }
             />
         ))}
@@ -77,16 +104,16 @@ function Sidebar() {
       <UploadImageModal
         isOpen={openModal === 'upload'}
         onClose={() => setOpenModal(null)}
-        onUpload={() => {}}
+        onUpload={(file) => { addImage(URL.createObjectURL(file)) }}
       />
 
       <SaveArtModal
         isOpen={openModal === 'save'}
         productName={selectedProduct?.productId || ''}
         selectedColor={selectedProduct?.color || ''}
-        artImage="https://via.placeholder.com/150"
+        artImage={exportedImage}
         onClose={() => setOpenModal(null)}
-        onSave={() => {}}
+        onSave={handleSave}
       />
 
     </div>
