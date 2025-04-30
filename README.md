@@ -1,54 +1,53 @@
-# React + TypeScript + Vite
+# Canvas Editor
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A web-based canvas editor built with **React**, **Konva**, and **TypeScript** that allows users to:
 
-Currently, two official plugins are available:
+- Upload and manipulate images on a canvas
+- Add and style text with font, size, bold, italic, underline, and alignment options
+- Select, drag, and transform objects
+- Export the canvas to an image
+- Edit and delete items using modals
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Features
 
-## Expanding the ESLint configuration
+- 📐 Responsive canvas scaling
+- 🖼️ Multi-image support with individual positioning and transformations
+- 🔤 Rich text editing with live preview
+- 🖱️ Object selection, dragging, and transforming
+- 📤 Export to image (`toDataURL`) with CORS-safe support
+- 🧰 Context-based state management for texts, images, and canvas
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## 📦 Tech Stack
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+- [React](https://reactjs.org/)
+- [Konva.js](https://konvajs.org/)
+- [react-konva](https://github.com/konvajs/react-konva)
+- [TypeScript](https://www.typescriptlang.org/)
+- Context API for state sharing
+
+## 🧪 Running Locally
+
+### 1. Clone the project
+
+```bash
+git clone https://github.com/marcelo3macedo/canvas-editor.git
+cd canvas-editor
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+2. Install dependencies
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+```bash
+npm install
+# or
+yarn install
 ```
+
+3. Start the development server
+
+```bash
+npm run dev
+# or
+yarn dev
+```
+
+Open http://localhost:5173 to view the app.
