@@ -3,8 +3,8 @@ import type { Stage } from 'konva/lib/Stage';
 import type { Transformer } from 'konva/lib/shapes/Transformer';
 
 type CanvasContextType = {
-  stageRef: React.RefObject<Stage>;
-  transformerRef: React.RefObject<Transformer>;
+  stageRef: React.RefObject<Stage | null>;
+  transformerRef: React.RefObject<Transformer | null>;
 };
 
 const CanvasContext = createContext<CanvasContextType | undefined>(undefined);

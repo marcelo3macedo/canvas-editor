@@ -15,7 +15,6 @@ export function CanvasEditor() {
   const { texts, updateText, removeText } = useTextContext();
   const { images, deleteImage, updateImage } = useImageContext();
   const [showImageEditModal, setShowImageEditModal] = useState(false);
-  const [selectedImage, setSelectedImage] = useState<ImageItemProps | null>(null);
 
   const [image] = useImage(productImage, 'anonymous');
   const [canvasWidth, setCanvasWidth] = useState(500);
@@ -109,7 +108,7 @@ export function CanvasEditor() {
           const { x, y } = e.target.position();
           updateImage(id, { x, y });
         }}
-        onTransformEnd={(e) => {
+        onTransformEnd={() => {
           const node = shapeRef.current;
           const scaleX = node.scaleX();
           const scaleY = node.scaleY();
@@ -187,9 +186,10 @@ export function CanvasEditor() {
         <ImageEditPanel
           onClose={() => setShowImageEditModal(false)}
           onDelete={() => {
-            deleteImage(selectedId);
+            if (selectedId) {
+              deleteImage(selectedId);
+            }
             setSelectedId(null);
-            setSelectedImage(null);
             setShowImageEditModal(false);
           }}
         />

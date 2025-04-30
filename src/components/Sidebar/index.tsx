@@ -35,7 +35,7 @@ function Sidebar() {
   const validate = (modal: ModalType) => {
     setSidebarOpen(false);
     
-    if (modal === 'save') {
+    if (modal === 'save' && stageRef.current) {
       transformerRef.current?.nodes([]);
       const uri = stageRef.current.toDataURL({ pixelRatio: 2 });
       setExportedImage(uri);

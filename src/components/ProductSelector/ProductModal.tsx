@@ -50,7 +50,7 @@ export function ProductModal({ isOpen, onClose, onSelect }: ProductModalProps) {
                 <div
                   key={product.id}
                   className={`border-2 rounded-xl p-3 flex items-center gap-4 cursor-pointer transition hover:border-blue-400 ${
-                    selectedProduct?.id === product.id ? 'border-blue-500' : 'border-gray-200'
+                    (selectedProduct as any)?.id === product.id ? 'border-blue-500' : 'border-gray-200'
                   }`}
                   onClick={() => handleProductSelect(product)}
                 >
