@@ -1,5 +1,5 @@
-import { Home } from './pages/Home';
-import { AppProviders } from './AppProviders';
+import { Home } from "./pages/Home";
+import { AppProviders } from "./AppProviders";
 
 function App() {
   return (
