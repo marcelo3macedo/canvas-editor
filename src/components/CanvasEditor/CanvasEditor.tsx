@@ -15,7 +15,8 @@ export function CanvasEditor() {
   const { texts, updateText, removeText } = useTextContext();
   const { images, deleteImage, updateImage } = useImageContext();
 
-  const [image] = useImage(productImage, 'anonymous');
+  const [image] = useImage(`${import.meta.env.BASE_URL}${productImage}`, 'anonymous');
+
   const [canvasWidth, setCanvasWidth] = useState(500);
   const canvasHeight = 600;
 
