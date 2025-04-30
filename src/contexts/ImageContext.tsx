@@ -11,6 +11,7 @@ type ImageData = {
 type ImageContextType = {
   images: ImageData[];
   addImage: (src: string) => void;
+  deleteImage: (id: string) => void;
 };
 
 const ImageContext = createContext<ImageContextType | undefined>(undefined);
@@ -31,8 +32,12 @@ export const ImageProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     ]);
   };
 
+  const deleteImage = (id: string) => {
+    setImages((prev) => prev.filter((img) => img.id !== id));
+  };
+
   return (
-    <ImageContext.Provider value={{ images, addImage }}>
+    <ImageContext.Provider value={{ images, addImage, deleteImage }}>
       {children}
     </ImageContext.Provider>
   );
