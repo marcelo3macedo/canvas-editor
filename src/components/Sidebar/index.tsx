@@ -11,6 +11,7 @@ import { SaveArtModal } from '../SaveArtModal';
 import { useTextContext } from '../../contexts/TextContext';
 import { useImageContext } from '../../contexts/ImageContext';
 import { useCanvasContext } from '../../contexts/CanvasContext';
+import { AiImageModal } from '../AIImageModal/AIImageModal';
 
 function Sidebar() {
   const [openModal, setOpenModal] = useState<ModalType>(null);
@@ -105,6 +106,14 @@ function Sidebar() {
         isOpen={openModal === 'upload'}
         onClose={() => setOpenModal(null)}
         onUpload={(file) => { addImage(URL.createObjectURL(file)) }}
+      />
+
+      <AiImageModal
+        isOpen={openModal === 'ai'}
+        onClose={() => setOpenModal(null)}
+        onSelect={(url) => {
+          addImage(url);
+        }}
       />
 
       <SaveArtModal

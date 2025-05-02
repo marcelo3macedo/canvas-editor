@@ -1,4 +1,4 @@
-import { FaTshirt, FaImage, FaFont, FaUpload, FaSave } from 'react-icons/fa';
+import { FaTshirt, FaImage, FaFont, FaUpload, FaMagic, FaSave } from 'react-icons/fa';
 import { ModalType } from '../../types/Sidebar';
 
 const sidebarButtons = [
@@ -21,6 +21,11 @@ const sidebarButtons = [
     icon: <FaUpload />,
     label: 'Fazer Upload',
     modal: 'upload' as ModalType,
+  },
+  {
+    icon: <FaMagic />,
+    label: 'Inteligência Artificial',
+    modal: 'ai'
   },
   {
     icon: <FaSave />,

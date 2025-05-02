@@ -4,6 +4,6 @@ interface SidebarButtonProps {
     onClick: () => void;
 }
 
-type ModalType = 'product' | 'image' | 'text' | 'upload' | 'save' | null;
+type ModalType = 'product' | 'image' | 'text' | 'upload' | 'save' | 'ai' | null;
 
 export type { ModalType, SidebarButtonProps };
