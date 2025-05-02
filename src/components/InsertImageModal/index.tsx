@@ -12,12 +12,14 @@ type InsertImageModalProps = {
   onSelect: (image: ImageItem) => void;
 };
 
-// Mock Images
-const allImages: ImageItem[] = Array.from({ length: 100 }, (_, i) => ({
-  id: `img-${i + 1}`,
-  url: `https://picsum.photos/seed/${i + 1}/200/200`,
-  category: ['Nature', 'Technology', 'Animals'][i % 3],
-}));
+const allImages: ImageItem[] = Array.from({ length: 100 }, (_, i) => {
+  const image = `/stickers/${i + 1}.png`;
+  return {
+    id: `img-${i + 1}`,
+    url: `${import.meta.env.BASE_URL}${image}`,
+    category: ['Nature', 'Technology', 'Animals'][i % 3],
+  };
+});
 
 export function InsertImageModal({ isOpen, onClose, onSelect }: InsertImageModalProps) {
   const [searchTerm, setSearchTerm] = useState('');
@@ -84,17 +86,17 @@ export function InsertImageModal({ isOpen, onClose, onSelect }: InsertImageModal
         </div>
 
         {/* Image Grid */}
-        <div className="flex-1 overflow-y-auto grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+        <div className="flex-1 overflow-y-scroll grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
           {paginatedImages.map(image => (
             <div
               key={image.id}
-              className="border rounded-lg overflow-hidden cursor-pointer hover:scale-105 transition"
+              className="border rounded-lg  cursor-pointer hover:scale-105 transition"
               onClick={() => {
                 onSelect(image);
                 onClose();
               }}
             >
-              <img src={image.url} alt={image.id} className="w-full h-32 object-cover" />
+              <img src={image.url} alt={image.id} className="w-full h-60 object-contain" />
               <div className="p-2 text-center text-sm">{image.category}</div>
             </div>
           ))}
