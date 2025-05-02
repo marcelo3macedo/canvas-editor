@@ -24,7 +24,7 @@ export function TextEditPanel({ text, onChange, onClose, onDelete }: TextEditPan
   };
 
   return (
-    <div className="fixed right-4 bottom-0 bg-white p-4 rounded shadow-md md:w-64 z-50
+    <div className="fixed right-4 bottom-0 bg-white p-4 rounded shadow-md z-50
                     md:right-4 md:bottom-0 
                     sm:w-full sm:bottom-0 sm:top-auto sm:left-0 sm:right-0 sm:rounded-none sm:border-t">
       <div className="flex flex-col gap-2 w-80 mx-auto">
