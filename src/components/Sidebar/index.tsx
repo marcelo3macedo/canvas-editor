@@ -74,8 +74,8 @@ function Sidebar() {
               label={button.label}
               onClick={
                   () => {
-                    setOpenModal(button.modal)
-                    validate(button.modal)
+                    setOpenModal(button.modal as ModalType);
+                    validate(button.modal as ModalType)
                   }
               }
             />
